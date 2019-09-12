@@ -1,0 +1,42 @@
+<div class="container">
+    <button class="btn btn-success" data-toggle="modal" data-target="#myModal">Add comic</button>
+</div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title">Add comic</h4>
+      </div>
+      <div class="modal-body">
+          <form>
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="" id="" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Artist</label>
+                <input type="text" name="" id="" class="form-control">
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <select name="selectTag" [(ngModel)]="currentTagToDecide" class="form-control">
+                    <option *ngFor="let tag of tagsToSelect" [ngValue]="tag">{{tag.name}}</option>
+                  </select>
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" (click)="addTag()">Add tag</button>
+                  </div>
+                </div>
+                <span class="badge" *ngFor="let tag of tagsToUpload" (click)="removeTag(tag)">{{tag.name}}</span>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>

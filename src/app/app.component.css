@@ -1,0 +1,16 @@
+.main-header {
+    background: #A62639;
+    min-height: 50px;
+    width: 100%;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.brand-name {
+    padding-top: 6px;
+    padding-left: 20px;
+    height: 100%;
+    display: inline-block;
+    font-size: 1.4em;
+    font-family:  'Lobster', cursive;
+}
