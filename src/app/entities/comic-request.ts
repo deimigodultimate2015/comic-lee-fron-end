@@ -1,10 +1,9 @@
 import { Tag } from './tag';
 import { Identifiers } from '@angular/compiler';
 
-export class Comic {
+export class ComicRequest {
 
-    uploader: number;
-    id: number;
+    uploaderId: number;
     title: string;
     artist: string;
     tags: Tag[];

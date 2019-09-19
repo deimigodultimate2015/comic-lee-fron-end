@@ -1,0 +1,36 @@
+.card-header {
+    background-color: #A62639;
+    color: white;
+}
+
+
+.page-collection {
+    margin: 10px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.page {
+    max-width: 23%;
+    margin-right: 2%;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.page img {
+    width: 100%;
+}
+
+.insert-slogan {
+    font-size: 2em;
+    font-family:  'Lobster', cursive;
+}
+
+.insert-slogan-special:hover {
+    cursor: pointer;
+    font-size: 2em;
+    color: #D32B21;;
+    font-family:  'Lobster', cursive;
+    text-decoration: underline;
+}

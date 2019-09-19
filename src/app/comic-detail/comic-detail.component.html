@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="card p-3">
+        <div class="row">
+            <div class="col-5">
+                <img class="img-thumbnail" *ngIf="pages.length > 0" [src]="getSanitizerForCover()" alt="">
+            </div>
+            <div class="col-7">
+                <h3>{{currentComic.title}}</h3>
+                <hr>
+                <h5>Artist: {{currentComic.artist}}</h5>
+                <h5>Upload date: {{currentComic.date}}</h5>
+                <h5>Uploader: {{currentComic.uploader.display}}</h5>
+                <h5>Tags:
+                    <div class="badge badge-danger m-1" *ngFor="let tag of currentComic.tags">{{tag.name}}</div>
+                </h5>
+                <div class="form-group">
+                        <button type="button" class="btn btn-primary m-2" (click)='navigateToMainList()'>
+                                <i class="fas fa-arrow-left"></i> Turn back to list</button>
+                        <button type="button" class="btn btn-primary" (click)='updatePageIndex()'>
+                                Update pages status <i class="fas fa-check-circle"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="pagesChanged" class="alert alert-danger mt-2">
+        Your pages' comic structure have been changed but not update on server yet, click 'Update pages status' to save your change, reload page to undo</div>
+    <div *ngIf="pagesUpdated" class="alert alert-success mt-2">
+        Your pages' comic structure change has been up-to-date, have a nice day sir :D</div>
+
+    <div cdkDropList class="page-collection">
+        <div class="card page" cdkDrag *ngFor="let page of pages; let i = index">
+            <div class="card-header">
+                <button class="btn btn-danger btn-block" (click)="removeFromPages(i)">Delete page {{i}}</button>
+            </div>
+            <img class="mt-2" [src]="getSanitizer(page.id)" alt="{{page.name}}">
+            <div class="d-flex  flex-column card-body">
+                <form class="mt-auto">
+                    <div class="input-group mt-auto">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-primary" (click)="movePageTo(i, indexZ.value)">Move to index</button>
+                        </div>
+                        <input type="number" class="form-control" name="indexZ" #indexZ>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card page" style="text-align: center; padding-top: 20px;">
+            <input hidden type="file" class="form-control" #inputFile (change)="onFileSelected($event)">
+            <span class="insert-slogan insert-slogan-special" (click)="inputFile.click()" >>> Click to <<</span>
+            <div style="height: 100%; padding-top: 30%; text-align: center">
+                <img  src="https://upload.wikimedia.org/wikipedia/en/8/82/Studio_Wildcard_logo.png" alt="">
+                <span class="insert-slogan">Insert your new page here</span>
+            </div>
+            
+        </div>
+    </div>
+</div>

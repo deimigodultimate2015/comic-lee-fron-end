@@ -1,41 +1,100 @@
 <div class="container">
-    <button class="btn btn-success" data-toggle="modal" data-target="#myModal">Add comic</button>
-</div>
+  <button class="btn btn-success mb-2" data-toggle="modal" data-target="#myModal" 
+    (click)="openAdd()">Add comic <i class="fas fa-plus"></i></button>
+  <a class="text-white btn btn-success ml-2 mb-2"
+    href="http://localhost:8080/api/statistic/uploadercomic/hanazuki20">Export excel <i class="fas fa-file"></i></a>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+          <th>Title</th>
+          <th>Artist</th>
+          <th>Upload time</th>
+          <th>Action</th>
+      </tr>
+    </thead>
+    <tbody >
+        <tr *ngFor="let comic of listComics; let i = index">
+            <td>{{comic.title}}</td>
+            <td>{{comic.artist}}</td>
+            <td>{{comic.date}}</td>
+            <td style="width: 22%"><button type="button" class="btn btn-primary" (click)="goToDetails(comic.id)">Detail <i class="fas fa-info-circle"></i></button>
+              <button class="btn btn-success ml-2" data-toggle="modal" data-target="#myModal" 
+              (click)="openEdit(i)">Edit comic <i class="fas fa-edit"></i></button></td>
+        </tr>
+    </tbody>
+  </table>
+ </div>
+
+
+
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title">Add comic</h4>
-      </div>
-      <div class="modal-body">
-          <form>
-              <div class="form-group">
-                <label>Title</label>
-                <input type="text" name="" id="" class="form-control">
+      <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+
+        <div class="modal-header text-center">
+          <h4 class="modal-title">
+            <span *ngIf="!isEdit">Add comic <i class="fas fa-plus"></i></span>
+            <span *ngIf="isEdit">Edit comic <i class="fas fa-edit"></i></span>
+          </h4>
+        </div>
+
+        <div class="modal-body">
+          
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" [(ngModel)]="comicRequest.title" 
+              class="form-control" name="title" #title="ngModel" minlength="6" maxlength="255" required>
+
+              <div class="text text-danger" *ngIf="title.invalid">
+                  <div *ngIf="title.errors?.required">Title is required</div>
+                  <div *ngIf="title.errors?.minlength">Title must have more than 6 character</div>
               </div>
-              <div class="form-group">
-                <label>Artist</label>
-                <input type="text" name="" id="" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Artist</label>
+            <input type="text" [(ngModel)]="comicRequest.artist" 
+              class="form-control" name="artist" #artist="ngModel" minlength="2" maxlength="70" required>
+              <div class="text text-danger" *ngIf="artist.invalid">
+                  <div *ngIf="artist.errors?.required">Artist is required</div>
+                  <div *ngIf="artist.errors?.minlength">Artist must have more than 2 character</div>
               </div>
-              <div class="form-group">
-                <div class="input-group">
-                  <select name="selectTag" [(ngModel)]="currentTagToDecide" class="form-control">
-                    <option *ngFor="let tag of tagsToSelect" [ngValue]="tag">{{tag.name}}</option>
-                  </select>
-                  <div class="input-group-append">
-                    <button type="button" class="btn btn-primary" (click)="addTag()">Add tag</button>
-                  </div>
-                </div>
-                <span class="badge" *ngFor="let tag of tagsToUpload" (click)="removeTag(tag)">{{tag.name}}</span>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <select name="selectTag" [(ngModel)]="currentTagToDecide"  class="form-control">
+                <option *ngFor="let tag of tagsToSelect" [ngValue]="tag">{{tag.name}}</option>
+              </select>
+              <div class="input-group-append">
+                <button type="button" class="btn btn-primary" (click)="addTag()">Add tag</button>
               </div>
-          </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-      </div>
+            </div>
+            <span class="badge" *ngFor="let tag of tagsToUpload" (click)="removeTag(tag)">{{tag.name}}</span>
+          </div>
+
+          <div *ngIf="uploadState && uploadClicked" class="alert alert-success">{{uploadMessage}}</div>
+          <div *ngIf="!uploadState && uploadClicked" class="alert alert-danger">{{uploadMessage}}</div>
+        </div>
+
+        <div class="modal-footer">
+
+          <button type="button" class="btn" 
+            *ngIf="!uploadClicked && !uploadState && !isEdit"
+            [ngClass]="{'btn-secondary disabled': f.form.invalid, 'btn-primary': f.form.valid }" 
+            (click)="onSubmit()">Store <i *ngIf="f.form.valid" class="fas fa-check"></i><i *ngIf="f.form.invalid" class="fas fa-ban"></i></button>
+          <button type="button" class="btn" 
+            *ngIf="!uploadClicked && !uploadState && isEdit"
+            [ngClass]="{'btn-secondary disabled': f.form.invalid, 'btn-primary': f.form.valid }" 
+            (click)="onUpdate()">Update <i *ngIf="f.form.valid" class="fas fa-check"></i><i *ngIf="f.form.invalid" class="fas fa-ban"></i></button>
+          <button (click)="clearUpload()" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+
+      </form>
     </div>
 
   </div>

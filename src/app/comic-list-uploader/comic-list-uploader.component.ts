@@ -1,30 +1,57 @@
+import { ComicResponse } from './../entities/comic-response';
+import { ComicService } from './../service/comic.service';
+import { ComicRequest } from './../entities/comic-request';
+import { TagService } from './../service/tag.service';
 import { Tag } from './../entities/tag';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-comic-list-uploader',
   templateUrl: './comic-list-uploader.component.html',
   styleUrls: ['./comic-list-uploader.component.css']
 })
-export class ComicListUploaderComponent implements OnInit {
+export class ComicListUploaderComponent implements OnInit, OnDestroy {
+
+  listComics: ComicResponse[] ;
+
+  isEdit = false;
+  currentIdToUpdate: number;
+
+  uploadClicked = false;
+  uploadState = false;
+  uploadMessage = '';
+
+  tagSubcribe: Subscription;
 
   tagsToUpload: Tag[] = [];
   tagsToSelect: Tag[] = [];
 
+  comicRequest: ComicRequest = new ComicRequest();
+
   currentTagToDecide: Tag = this.tagsToSelect[0];
 
-  constructor() { }
+  constructor(private tagServe: TagService, private comicServe: ComicService,
+              private router: Router) { }
 
   ngOnInit() {
-    this.tagsToSelect.push(new Tag(1, 'Action'));
-    this.tagsToSelect.push(new Tag(2, 'Comedy'));
-    this.tagsToSelect.push(new Tag(3, 'Adventure'));
-    this.tagsToSelect.push(new Tag(4, 'Drama'));
-    this.tagsToSelect.push(new Tag(5, 'Horror'));
+    this.tagSubcribe = this.tagServe.getAllTags().subscribe(data => {
+      this.tagsToSelect = data;
+      this.currentTagToDecide = this.tagsToSelect[0];
+    });
+
+    this.updateComicsList();
   }
 
-  onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
+  goToDetails(id: number) {
+    this.router.navigate(['/comic/detail', id]);
+  }
+
+  updateComicsList() {
+    this.comicServe.getAllComics().subscribe(data => {
+      this.listComics = data;
+    });
   }
 
   addTag() {
@@ -32,6 +59,60 @@ export class ComicListUploaderComponent implements OnInit {
       this.addTagDeep2();
     } else {
     }
+  }
+
+  openEdit(index: number) {
+    this.clearUpload();
+
+    this.comicRequest.uploaderId = this.listComics[index].uploader.id;
+    this.comicRequest.title = this.listComics[index].title;
+    this.comicRequest.artist = this.listComics[index].artist;
+    this.tagsToUpload = this.listComics[index].tags;
+    this.currentIdToUpdate = this.listComics[index].id;
+
+    this.isEdit = true;
+  }
+
+  openAdd() {
+    this.clearUpload();
+    this.isEdit = false;
+  }
+
+  onUpdate() {
+    this.comicRequest.tags = this.tagsToUpload;
+
+    this.uploadClicked = true;
+
+    console.log(this.comicRequest);
+
+    this.comicServe.updateComic(this.currentIdToUpdate, this.comicRequest).subscribe(data => {
+      this.uploadMessage = 'Comic store success fully';
+      this.uploadState = true;
+      this.updateComicsList();
+    }, error => {
+      this.uploadMessage = error.error.message;
+      this.uploadState = false;
+    });
+
+    this.updateComicsList();
+  }
+
+  onSubmit() {
+
+    this.comicRequest.uploaderId = 21;
+
+    this.comicRequest.tags = this.tagsToUpload;
+
+    this.uploadClicked = true;
+
+    this.comicServe.storeComic(this.comicRequest).subscribe(data => {
+      this.uploadMessage = 'Comic store success fully';
+      this.uploadState = true;
+      this.updateComicsList();
+    }, error => {
+      this.uploadMessage = error.error.message;
+      this.uploadState = false;
+    });
   }
 
   addTagDeep2() {
@@ -62,6 +143,18 @@ export class ComicListUploaderComponent implements OnInit {
       const index = this.tagsToUpload.indexOf(tag, 0);
       this.tagsToUpload.splice(index, 1);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.tagSubcribe.unsubscribe;
+  }
+
+  clearUpload() {
+    this.currentIdToUpdate = 0;
+    this.uploadClicked = false;
+    this.tagsToUpload = [];
+    this.comicRequest = new ComicRequest();
+    this.uploadState = false;
   }
 
 }
