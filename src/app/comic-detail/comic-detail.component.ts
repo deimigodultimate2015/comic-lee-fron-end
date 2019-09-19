@@ -90,7 +90,7 @@ export class ComicDetailComponent implements OnInit {
   }
 
   navigateToMainList() {
-    this.router.navigate(['comic']);
+    this.router.navigate(['admin/comics']);
   }
 
   public getAllPages() {

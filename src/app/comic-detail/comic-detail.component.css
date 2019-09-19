@@ -30,7 +30,7 @@
 .insert-slogan-special:hover {
     cursor: pointer;
     font-size: 2em;
-    color: #D32B21;;
     font-family:  'Lobster', cursive;
+    color: #D32B21;;
     text-decoration: underline;
 }

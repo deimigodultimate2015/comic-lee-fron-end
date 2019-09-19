@@ -1,0 +1,43 @@
+.comic-collections {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.comic {
+    max-width: 16%;
+    margin-right: 20px;
+    margin-bottom: 15px;
+    flex-grow: 1;
+    font-family: 'Open Sans', sans-serif;
+    border: none;
+}
+
+.my-card-body {
+    max-width: auto;
+    padding: 5px 0px 5px 0px;
+}
+
+.image-wrapper{
+    height: 250px;
+}
+
+.comic img {
+    height: 100%;
+    border: 2px solid transparent;
+}
+
+.comic img:hover {
+    cursor: pointer;
+    border: 2px solid orange;
+}
+
+.title {
+    font-size: 1.1em;
+}
+
+.title:hover {
+    color: orange;
+    cursor: pointer;
+}
+

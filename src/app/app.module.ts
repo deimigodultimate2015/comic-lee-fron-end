@@ -8,12 +8,14 @@ import { ComicListUploaderComponent } from './comic-list-uploader/comic-list-upl
 import { HttpClientModule } from '@angular/common/http';
 import { ComicDetailComponent } from './comic-detail/comic-detail.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { UserComicListComponent } from './user-comic-list/user-comic-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ComicListUploaderComponent,
-    ComicDetailComponent
+    ComicDetailComponent,
+    UserComicListComponent
   ],
   imports: [
     BrowserModule,

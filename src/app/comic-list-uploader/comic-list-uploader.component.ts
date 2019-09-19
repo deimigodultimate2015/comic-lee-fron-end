@@ -146,7 +146,6 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.tagSubcribe.unsubscribe;
   }
 
   clearUpload() {

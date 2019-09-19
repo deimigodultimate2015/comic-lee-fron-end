@@ -27,4 +27,8 @@ export class ComicService {
   updateComic(comicId: number, comicRequest: ComicRequest): Observable<object> {
     return this.http.put(MyConstant.API_ENDPOINT + 'comic/' + comicId, comicRequest);
   }
+
+  getUserComic(): Observable<any> {
+    return this.http.get(MyConstant.API_ENDPOINT + 'user/comics');
+  }
 }
