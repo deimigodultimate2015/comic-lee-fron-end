@@ -34,3 +34,19 @@
     color: #D32B21;;
     text-decoration: underline;
 }
+
+.love-button {
+    background-color: #ff2853;
+    border: none;
+    font-size: 1.1em;
+}
+
+.read-button {
+    background-color: #8bc34a;
+    border: none;
+    font-size: 1.1em;
+}
+
+.container {
+    min-height: 100vh;
+}

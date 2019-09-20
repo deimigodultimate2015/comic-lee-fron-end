@@ -13,4 +13,11 @@
     display: inline-block;
     font-size: 1.4em;
     font-family:  'Lobster', cursive;
+    cursor: pointer;
+    background-color: #212121;
+}
+
+* {
+    
+    background-color: #edecea;
 }

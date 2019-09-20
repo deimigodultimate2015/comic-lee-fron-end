@@ -1,0 +1,7 @@
+<div class="container-wrapper">
+    <div class="container">
+        <div *ngFor="let page of pages" class="mb-2" style="text-align: center; ">
+            <img [src]="getSanitizer(page.id)" alt="" style="max-width: 60%">
+        </div>
+    </div>
+</div>

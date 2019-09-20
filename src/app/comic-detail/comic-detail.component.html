@@ -1,19 +1,26 @@
 <div class="container">
     <div class="card p-3">
         <div class="row">
-            <div class="col-5">
+            <div class="col-3">
                 <img class="img-thumbnail" *ngIf="pages.length > 0" [src]="getSanitizerForCover()" alt="">
             </div>
-            <div class="col-7">
+            <div class="col-9">
                 <h3>{{currentComic.title}}</h3>
                 <hr>
-                <h5>Artist: {{currentComic.artist}}</h5>
-                <h5>Upload date: {{currentComic.date}}</h5>
-                <h5>Uploader: {{currentComic.uploader.display}}</h5>
-                <h5>Tags:
+                <p style="line-height: 0.7em"><strong>Artist:</strong> {{currentComic.artist}}</p>
+                <p style="line-height: 0.7em"><strong>Upload date:</strong> {{currentComic.date}}</p>
+                <p style="line-height: 0.7em"><strong>Uploader:</strong> {{currentComic.uploader.display}}</p>
+                <strong>Tags:
                     <div class="badge badge-danger m-1" *ngFor="let tag of currentComic.tags">{{tag.name}}</div>
-                </h5>
-                <div class="form-group">
+                </strong>
+                <hr>
+                <div class="form-group" *ngIf="!isAdmin">
+                    <button type="button" class="btn btn-primary m-2 love-button">
+                        <i class="fas fa-heart mr-1"></i> Favorite (4283)</button>
+                    <button type="button" class="btn btn-primary read-button" (click)="navigateToRead(currentComic.id)">
+                            Read issue <i class="fas fa-book ml-1"></i></button>
+                </div>  
+                <div class="form-group" *ngIf="isAdmin">
                         <button type="button" class="btn btn-primary m-2" (click)='navigateToMainList()'>
                                 <i class="fas fa-arrow-left"></i> Turn back to list</button>
                         <button type="button" class="btn btn-primary" (click)='updatePageIndex()'>
@@ -28,7 +35,7 @@
     <div *ngIf="pagesUpdated" class="alert alert-success mt-2">
         Your pages' comic structure change has been up-to-date, have a nice day sir :D</div>
 
-    <div cdkDropList class="page-collection">
+    <div cdkDropList class="page-collection" *ngIf="isAdmin">
         <div class="card page" cdkDrag *ngFor="let page of pages; let i = index">
             <div class="card-header">
                 <button class="btn btn-danger btn-block" (click)="removeFromPages(i)">Delete page {{i}}</button>

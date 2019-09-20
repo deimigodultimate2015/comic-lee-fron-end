@@ -13,6 +13,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ComicDetailComponent implements OnInit {
 
+  isAdmin = false;
+
   pages: CustomPage[] = [];
   currentImageToUpload: File;
 
@@ -91,6 +93,10 @@ export class ComicDetailComponent implements OnInit {
 
   navigateToMainList() {
     this.router.navigate(['admin/comics']);
+  }
+
+  navigateToRead(id: number) {
+    this.router.navigate(['comic/read', id]);
   }
 
   public getAllPages() {

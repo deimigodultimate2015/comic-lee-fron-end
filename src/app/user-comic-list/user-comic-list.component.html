@@ -3,10 +3,10 @@
         <div class="comic-collections">
             <div *ngFor="let comic of userComics" class="comic">
                 <div class="image-wrapper">
-                    <img [src]="getSanitizer(comic.coverId)" alt="">
+                    <img [src]="getSanitizer(comic.coverId)" alt="" (click)="toDetailPage(comic.comicId)">
                 </div>
                 <div class="my-card-body">
-                    <div class="title">{{comic.title}}</div>
+                    <div class="title" (click)="toDetailPage(comic.comicId)">{{comic.title}}</div>
                 </div>
             </div>
         </div>
