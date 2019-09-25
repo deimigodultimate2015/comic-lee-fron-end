@@ -1,3 +1,7 @@
+import { Uploader } from './../entities/uploader';
+import { UploaderService } from './../service/uploader.service';
+import { TokenStorageService } from './../auth/token-storage.service';
+import { PageService } from './../service/page.service';
 import { ComicResponse } from './../entities/comic-response';
 import { ComicService } from './../service/comic.service';
 import { ComicRequest } from './../entities/comic-request';
@@ -25,6 +29,8 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
 
   tagSubcribe: Subscription;
 
+  uploaderInfo: Uploader;
+
   tagsToUpload: Tag[] = [];
   tagsToSelect: Tag[] = [];
 
@@ -33,15 +39,35 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
   currentTagToDecide: Tag = this.tagsToSelect[0];
 
   constructor(private tagServe: TagService, private comicServe: ComicService,
-              private router: Router) { }
+              private router: Router, private token: TokenStorageService,
+              private uploaderService: UploaderService) { }
+
+
+  checkRole() {
+    if (this.token.getAuthorities()[0] !== 'ROLE_UPLOADER') {
+      this.router.navigate(['comics']);
+    }
+  }
 
   ngOnInit() {
+    this.checkRole();
+    this.uploaderInit();
+    this.tagInit();
+  }
+
+  tagInit() {
     this.tagSubcribe = this.tagServe.getAllTags().subscribe(data => {
       this.tagsToSelect = data;
       this.currentTagToDecide = this.tagsToSelect[0];
     });
+  }
 
-    this.updateComicsList();
+  uploaderInit() {
+    this.uploaderService.getUploaderInfo(this.token.getUsername()).subscribe((data: Uploader) => {
+      this.uploaderInfo = data;
+      this.updateComicsList();
+      console.log(data);
+    });
   }
 
   goToDetails(id: number) {
@@ -49,8 +75,12 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
   }
 
   updateComicsList() {
-    this.comicServe.getAllComics().subscribe(data => {
+    console.log('called');
+    this.comicServe.getAllComics(this.uploaderInfo.id).subscribe(data => {
       this.listComics = data;
+      console.log('Ok');
+    }, error => {
+      console.log(error);
     });
   }
 
@@ -99,7 +129,7 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
 
   onSubmit() {
 
-    this.comicRequest.uploaderId = 21;
+    this.comicRequest.uploaderId = this.uploaderInfo.id;
 
     this.comicRequest.tags = this.tagsToUpload;
 

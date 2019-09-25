@@ -1,6 +1,15 @@
 <div class="container-wrapper">
   <div class="main-header">
-      <span class="brand-name" (click)="toHomePage()">Comics' Lee</span>
+      <div class="row" style="width: 100%">
+        <div class="col brand-name-col">
+          <span class="brand-name" (click)="toHomePage()">Comics' Lee</span>
+        </div>
+        <div class="col user-info">
+          <span class="username-navbar">{{info.username}}</span>
+          <button class="logout-button" *ngIf="!info.username" (click)="goToLogin()">Sign in</button>
+          <button class="logout-button" *ngIf="info.username" (click)="logout()">Logout</button>
+        </div>
+      </div>
   </div>
   <router-outlet></router-outlet>
 </div>

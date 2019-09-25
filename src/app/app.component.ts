@@ -1,3 +1,4 @@
+import { TokenStorageService } from './auth/token-storage.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,8 +9,24 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'ComicLee-Front-End';
+  info: any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private token: TokenStorageService) {
+    this.info = {
+      username: this.token.getUsername(),
+      token: this.token.getToken(),
+      // authorities: this.token.getAuthorities()
+    };
+    console.log(this.info);
+  }
+
+  logout() {
+    this.token.signOut();
+    window.location.reload();
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 
   toHomePage() {

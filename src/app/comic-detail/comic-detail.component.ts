@@ -1,3 +1,4 @@
+import { TokenStorageService } from './../auth/token-storage.service';
 import { PageService } from './../service/page.service';
 import { ComicResponse } from './../entities/comic-response';
 import { ComicService } from './../service/comic.service';
@@ -13,8 +14,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ComicDetailComponent implements OnInit {
 
-  isAdmin = false;
-
   pages: CustomPage[] = [];
   currentImageToUpload: File;
 
@@ -26,7 +25,7 @@ export class ComicDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private comicService: ComicService,
               private pageService: PageService, private sanitizer: DomSanitizer,
-              private router: Router) {
+              private router: Router, private token: TokenStorageService) {
 
   }
 

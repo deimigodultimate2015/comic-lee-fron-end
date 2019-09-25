@@ -3,7 +3,7 @@ export class CustomPage {
     index: string;
     name: string;
 
-    constructor(id: number, cdn: string, index: string) {
+    constructor(id: number, name: string, index: string) {
         this.name = name;
         this.id = id;
         this.index = index;

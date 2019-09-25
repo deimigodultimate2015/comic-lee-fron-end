@@ -10,6 +10,8 @@ import { ComicDetailComponent } from './comic-detail/comic-detail.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserComicListComponent } from './user-comic-list/user-comic-list.component';
 import { UserPageListComponent } from './user-page-list/user-page-list.component';
+import { LoginComponent } from './login/login.component';
+import { httpInterceptorProviders } from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,8 @@ import { UserPageListComponent } from './user-page-list/user-page-list.component
     ComicListUploaderComponent,
     ComicDetailComponent,
     UserComicListComponent,
-    UserPageListComponent
+    UserPageListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,7 @@ import { UserPageListComponent } from './user-page-list/user-page-list.component
     HttpClientModule,
     DragDropModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

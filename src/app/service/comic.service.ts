@@ -16,8 +16,8 @@ export class ComicService {
     return this.http.post(MyConstant.API_ENDPOINT + 'comic', comicRequest);
   }
 
-  getAllComics(): Observable<any> {
-    return this.http.get(MyConstant.API_ENDPOINT + 'comics');
+  getAllComics(uploaderId: number): Observable<any> {
+    return this.http.get(MyConstant.API_ENDPOINT + 'comics/' + uploaderId);
   }
 
   getComic(id: number): Observable<object> {

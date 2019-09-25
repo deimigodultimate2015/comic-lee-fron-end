@@ -1,9 +1,13 @@
 .main-header {
-    background: #212121;
+    background: #212121 ;
     min-height: 50px;
     width: 100%;
     color: white;
     margin-bottom: 15px;
+}
+
+.brand-name-col {
+    background-color: #212121;
 }
 
 .brand-name {
@@ -17,7 +21,28 @@
     background-color: #212121;
 }
 
-* {
-    
+.user-info {
+    background-color: #212121;
+    text-align: right;
+}
+
+.username-navbar {
+    background-color: #212121;;
+    margin-right: 15px;
+    font-size: 1.1em;
+}
+
+.logout-button {
+    display: inline-block;
+    border-radius: 10px;
+    font-family:  'Lobster', cursive;
+    margin-top: 10px;
+    color: #212121;
+    font-size: 1.2em;
+    background-color: white;
+    border: none;
+}
+
+.container-wrapper {
     background-color: #edecea;
 }
