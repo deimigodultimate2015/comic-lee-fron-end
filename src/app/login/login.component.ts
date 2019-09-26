@@ -1,3 +1,4 @@
+import { AppComponent } from './../app.component';
 import { JwtResponse } from './../entities/jwt-response';
 import { TokenStorageService } from './../auth/token-storage.service';
 import { AuthInfoLogin } from './../entities/auth-info-login';
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   loginInfo: AuthInfoLogin = new AuthInfoLogin('', '');
 
   constructor(private authService: AuthService, private tokenStorate: TokenStorageService,
-              private router: Router) { }
+              private router: Router, private navheader: AppComponent) { }
 
   loginFailed = false;
   loginFailedMess = '';
@@ -39,6 +40,7 @@ export class LoginComponent implements OnInit {
     this.setRegisterDefault();
     this.registerFieldRequired();
     this.authService.userRegister(this.registerForm).subscribe(data => {
+      this.isRegisterPhase = false;
       this.enableSuccess('Register successful! Login now \(o_o)/');
     }, error => {
       this.enableRError(error.error.message);
@@ -51,7 +53,8 @@ export class LoginComponent implements OnInit {
     if (!this.registerFailed) {
       this.authService.userLogin(this.loginInfo).subscribe((data: JwtResponse) => {
         this.saveJwtResponse(data);
-        window.location.reload();
+        this.checkRole();
+        this.navheader.updateInfo();
       }, error => {
         this.enableError('Wrong username or password');
       });
@@ -68,7 +71,8 @@ export class LoginComponent implements OnInit {
     if (!this.registerFailed) {
       this.authService.uploaderLogin(this.loginInfo).subscribe((data: JwtResponse) => {
         this.saveJwtResponse(data);
-        window.location.reload();
+        this.checkRole();
+        this.navheader.updateInfo();
       }, error => {
         this.enableError('Wrong username or password');
       });
