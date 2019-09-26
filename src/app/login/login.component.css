@@ -1,5 +1,5 @@
 .login-image {
-    height: 400px; 
+    height: 470px; 
     background-image: url(/assets/login.jpg);
     background-position: center;
     background-size: cover;
@@ -11,7 +11,7 @@
 .login-form {
     padding: 20px;
     background-color: white;
-    height: 400px;
+    height: 470px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
@@ -30,4 +30,13 @@
 .login-brand {
     font-size: 2em;
     font-family:  'Lobster', cursive;
+}
+
+.my-link {
+    color: #007bff !important;
+    cursor: pointer;
+}
+
+.my-link:hover {
+    text-decoration: underline !important;
 }

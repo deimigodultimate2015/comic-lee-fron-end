@@ -5,6 +5,7 @@ import { AuthInfoLogin } from './../entities/auth-info-login';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { RegisterForm } from '../entities/register-form';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  registerForm: RegisterForm = new RegisterForm('', '', '', '');
+  isRegisterPhase = false;
 
   loginInfo: AuthInfoLogin = new AuthInfoLogin('', '');
 
@@ -21,30 +25,54 @@ export class LoginComponent implements OnInit {
   loginFailed = false;
   loginFailedMess = '';
 
+  registerFailed = false;
+  registerFailedMess = '';
+
+  registerSuccess = false;
+  registerSuccessMess = '';
 
   ngOnInit() {
     this.checkRole();
   }
 
-
-  userSubmit() {
-    this.loginFieldRequired();
-    this.authService.userLogin(this.loginInfo).subscribe((data: JwtResponse) => {
-      this.saveJwtResponse(data);
-      window.location.reload();
+  userRegisterSubmit() {
+    this.setRegisterDefault();
+    this.registerFieldRequired();
+    this.authService.userRegister(this.registerForm).subscribe(data => {
+      this.enableSuccess('Register successful! Login now \(o_o)/');
     }, error => {
-      this.enableError('Wrong username or password');
+      this.enableRError(error.error.message);
     });
   }
 
-  adminSubmit() {
+  userSubmit() {
+    this.registerFailed = false;
     this.loginFieldRequired();
-    this.authService.uploaderLogin(this.loginInfo).subscribe((data: JwtResponse) => {
-      this.saveJwtResponse(data);
-      window.location.reload();
-    }, error => {
-      this.enableError('Wrong username or password');
-    });
+    if (!this.registerFailed) {
+      this.authService.userLogin(this.loginInfo).subscribe((data: JwtResponse) => {
+        this.saveJwtResponse(data);
+        window.location.reload();
+      }, error => {
+        this.enableError('Wrong username or password');
+      });
+    }
+  }
+
+  changeState() {
+    this.isRegisterPhase = this.isRegisterPhase ? false : true;
+  }
+
+  adminSubmit() {
+    this.registerFailed = false;
+    this.loginFieldRequired();
+    if (!this.registerFailed) {
+      this.authService.uploaderLogin(this.loginInfo).subscribe((data: JwtResponse) => {
+        this.saveJwtResponse(data);
+        window.location.reload();
+      }, error => {
+        this.enableError('Wrong username or password');
+      });
+    }
   }
 
   enableError(mess: string) {
@@ -52,9 +80,34 @@ export class LoginComponent implements OnInit {
     this.loginFailed = true;
   }
 
+  enableRError(mess: string) {
+    this.registerFailedMess = mess;
+    this.registerFailed = true;
+  }
+
+  enableSuccess(mess: string) {
+    this.registerSuccess = true;
+    this.registerSuccessMess = mess;
+  }
+
+  setRegisterDefault() {
+    this.registerFailed = false;
+    this.registerSuccess = false;
+
+    this.registerFailedMess = '';
+    this.registerSuccessMess = '';
+  }
+
   loginFieldRequired() {
     if (this.loginInfo.username.length < 1 || this.loginInfo.password.length < 1) {
       this.enableError('Username and password is required');
+    }
+  }
+
+  registerFieldRequired() {
+    if (this.registerForm.username.length < 1 || this.registerForm.password.length < 1 || this.registerForm.email.length < 1 ||
+        this.registerForm.displayName.length < 1) {
+      this.enableError('All fields are required');
     }
   }
 

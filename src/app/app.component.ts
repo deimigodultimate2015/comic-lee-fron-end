@@ -1,5 +1,6 @@
+import { UserComicListComponent } from './user-comic-list/user-comic-list.component';
 import { TokenStorageService } from './auth/token-storage.service';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,6 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @ViewChild(UserComicListComponent, {static: false}) userList;
+
   title = 'ComicLee-Front-End';
   info: any;
 
@@ -15,7 +18,7 @@ export class AppComponent {
     this.info = {
       username: this.token.getUsername(),
       token: this.token.getToken(),
-      // authorities: this.token.getAuthorities()
+      authorities: this.token.getAuthorities()
     };
     console.log(this.info);
   }
@@ -23,6 +26,10 @@ export class AppComponent {
   logout() {
     this.token.signOut();
     window.location.reload();
+  }
+
+  loadFavorites() {
+    this.userList.updateComicListFavorite();
   }
 
   goToLogin() {

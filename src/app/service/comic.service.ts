@@ -31,4 +31,8 @@ export class ComicService {
   getUserComic(): Observable<any> {
     return this.http.get(MyConstant.API_ENDPOINT + 'user/comics');
   }
+
+  getUserFavoriteComics(username: string): Observable<any> {
+    return this.http.get(`${MyConstant.API_ENDPOINT}user/favorite/comics/${username}`);
+  }
 }

@@ -41,3 +41,10 @@
     cursor: pointer;
 }
 
+.filter-button {
+    background-color:#8bc34a;
+    color: white;
+    border: none;
+    margin-right: 10px;
+    padding: 0px 10px;
+}

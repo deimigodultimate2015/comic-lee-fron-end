@@ -15,8 +15,10 @@
                 </strong>
                 <hr>
                 <div class="form-group" *ngIf="token.getAuthorities()[0] !== 'ROLE_UPLOADER'">
-                    <button type="button" class="btn btn-primary m-2 love-button">
-                        <i class="fas fa-heart mr-1"></i> Favorite (4283)</button>
+                    <button type="button" class="btn btn-primary m-2 love-button" (click)="favorite()">
+                        <i class="fas fa-heart mr-1"></i><span *ngIf="isFavorited">Unfavorite</span>
+                            <span *ngIf="!isFavorited">Favorite</span>
+                            ({{currentComic.comicFavorites}})</button>
                     <button type="button" class="btn btn-primary read-button" (click)="navigateToRead(currentComic.id)">
                             Read issue <i class="fas fa-book ml-1"></i></button>
                 </div>  

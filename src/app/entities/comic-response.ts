@@ -11,5 +11,6 @@ export class ComicResponse {
         display: string
     };
     date: string;
+    comicFavorites: number;
 
 }

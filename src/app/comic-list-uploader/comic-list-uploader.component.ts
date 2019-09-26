@@ -39,7 +39,7 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
   currentTagToDecide: Tag = this.tagsToSelect[0];
 
   constructor(private tagServe: TagService, private comicServe: ComicService,
-              private router: Router, private token: TokenStorageService,
+              private router: Router, public token: TokenStorageService,
               private uploaderService: UploaderService) { }
 
 

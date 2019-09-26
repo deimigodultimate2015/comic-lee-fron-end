@@ -1,3 +1,6 @@
+import { MyConstant } from './../constant/MyConstant';
+import { FavoriteRequest } from './../entities/favorite-request';
+import { UserService } from './../service/user.service';
 import { TokenStorageService } from './../auth/token-storage.service';
 import { PageService } from './../service/page.service';
 import { ComicResponse } from './../entities/comic-response';
@@ -23,19 +26,22 @@ export class ComicDetailComponent implements OnInit {
   pagesChanged = false;
   pagesUpdated = false;
 
+  isFavorited = false;
+
   constructor(private route: ActivatedRoute, private comicService: ComicService,
               private pageService: PageService, private sanitizer: DomSanitizer,
-              private router: Router, private token: TokenStorageService) {
+              private router: Router, public token: TokenStorageService,
+              private userSerivce: UserService) {
 
   }
 
   getSanitizer(url: string) {
-    url = 'http://localhost:8080/api/page/' + url;
+    url = MyConstant.API_ENDPOINT + 'page/' + url;
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   getSanitizerForCover() {
-    let url = 'http://localhost:8080/api/page/';
+    let url = MyConstant.API_ENDPOINT + 'page/';
     if (this.pages.length > 0) {
       url = url + this.pages[0].id;
     } else {
@@ -45,13 +51,29 @@ export class ComicDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+   this.updateComicInfo();
+
+  }
+
+  updateComicInfo() {
     const id = this.route.snapshot.paramMap.get('id');
     this.comicService.getComic(+id).subscribe((data: ComicResponse) => {
-      console.log(data);
       this.currentComic = data;
+      this.checkFavorState();
       this.getAllPages();
     });
+  }
 
+  checkFavorState() {
+    const favRequest: FavoriteRequest = new FavoriteRequest();
+    favRequest.username = this.token.getUsername();
+    favRequest.comicId = this.currentComic.id;
+
+    console.log(this.token.getUsername());
+    this.userSerivce.checkFavoriteState(favRequest).subscribe(data => {
+      console.log('Current favor state is: ' + data);
+      this.isFavorited = data;
+    });
   }
 
   updatePageIndex() {
@@ -79,6 +101,7 @@ export class ComicDetailComponent implements OnInit {
     console.log(this.currentImageToUpload.name);
     this.uploadForm.append('file', this.currentImageToUpload);
     this.uploadForm.append('comicId', this.currentComic.id + '');
+    this.uploadForm.append('comicId', this.currentComic.id + '');
     this.uploadForm.append('index', this.pages.length + '');
 
     this.pageService.uploadPage(this.uploadForm).subscribe(data => {
@@ -88,6 +111,22 @@ export class ComicDetailComponent implements OnInit {
       this.getAllPages();
     });
 
+  }
+
+  favorite() {
+    if (this.token.getUsername()) {
+      const favRequest: FavoriteRequest = new FavoriteRequest();
+      favRequest.username = this.token.getUsername();
+      favRequest.comicId = this.currentComic.id;
+
+      this.userSerivce.favorite(favRequest).subscribe(data => {
+        console.log(data);
+        this.checkFavorState();
+        this.updateComicInfo();
+      });
+    } else {
+      this.router.navigate(['login']);
+    }
   }
 
   navigateToMainList() {

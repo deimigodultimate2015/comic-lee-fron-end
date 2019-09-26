@@ -1,3 +1,5 @@
+import { MyConstant } from './../constant/MyConstant';
+import { TokenStorageService } from './../auth/token-storage.service';
 import { UserComicResponse } from './../entities/user-comics-response';
 import { ComicService } from './../service/comic.service';
 import { Component, OnInit, Sanitizer } from '@angular/core';
@@ -13,7 +15,7 @@ export class UserComicListComponent implements OnInit {
 
   constructor(private comicService: ComicService,
               private sanitizer: DomSanitizer,
-              private router: Router) { }
+              private router: Router, public token: TokenStorageService) { }
   userComics: UserComicResponse[] = [];
 
   ngOnInit() {
@@ -26,8 +28,14 @@ export class UserComicListComponent implements OnInit {
     });
   }
 
+  updateComicListFavorite() {
+    this.comicService.getUserFavoriteComics(this.token.getUsername()).subscribe(data => {
+      this.userComics = data;
+    });
+  }
+
   getSanitizer(url: string) {
-    url = 'http://localhost:8080/api/page/' + url;
+    url = MyConstant.API_ENDPOINT + 'page/' + url;
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 

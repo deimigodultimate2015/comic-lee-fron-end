@@ -1,5 +1,10 @@
 <div class="my-body">
     <div class="container">
+        <div *ngIf="token.getAuthorities()[0] === 'ROLE_USER'">
+            <button class="filter-button" (click)="updateComicListFavorite()">Show favorite list</button>
+            <button class="filter-button" (click)="updateComicList()">Show all</button>
+        </div>
+        <hr>
         <div class="comic-collections">
             <div *ngFor="let comic of userComics" class="comic">
                 <div class="image-wrapper">

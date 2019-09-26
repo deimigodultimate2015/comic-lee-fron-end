@@ -8,29 +8,80 @@
                         Comic's Lee    
                     </div>
                     <hr>
-                    <div class="form-group" >
-                        <div class="row" >
-                            <div class="col-2 col-label " style="background-color: white">Username</div>
-                            <div class="col-10" style="background-color: white">
-                                <input type="text" name="username" [(ngModel)]="loginInfo.username" class="form-control">
+                    <div *ngIf="!isRegisterPhase">
+                        <div class="form-group">
+                            <div class="row" >
+                                <div class="col-2 col-label " style="background-color: white">Username</div>
+                                <div class="col-10" style="background-color: white">
+                                    <input type="text" name="username" [(ngModel)]="loginInfo.username" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-2 col-label" style="background-color: white">Password</div>
+                                <div class="col-10" style="background-color: white"> 
+                                    <input type="password" name="password" [(ngModel)]="loginInfo.password" class="form-control">
+                                    <div class="text-danger" *ngIf="loginFailed">{{loginFailedMess}}</div>
+                                    <input type="checkbox" class="mr-2 mt-3 mb-2">Remember me <br>
+                                    <button class="btn btn-primary mr-3 mt-3" (click)="userSubmit()">Login as user</button>
+                                    <button class="btn btn-primary mr-3 mt-3" (click)="adminSubmit()">Login as admin</button><br>
+                                    <br>
+                                    <a  class="mt-3 my-link" (click)="changeState()">- Not have account yet? Register now!</a><br>
+                                    <a  class="mt-3 my-link">- Forgot password</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-2 col-label" style="background-color: white">Password</div>
-                            <div class="col-10" style="background-color: white"> 
-                                <input type="password" name="password" [(ngModel)]="loginInfo.password" class="form-control">
-                                <div class="text-danger" *ngIf="loginFailed">{{loginFailedMess}}</div>
-                                <input type="checkbox" class="mr-2 mt-3 mb-2">Remember me <br>
-                                <button class="btn btn-primary mr-3 mt-3" (click)="userSubmit()">Login as user</button>
-                                <button class="btn btn-primary mr-3 mt-3" (click)="adminSubmit()">Login as admin</button><br>
-                                <br>
-                                <a href="#" class="mt-3">- Not have account yet? Register now!</a><br>
-                                <a href="#" class="mt-3">- Forgot password</a>
+                    
+                    <form *ngIf="isRegisterPhase" (ngSubmit)="f.form.valid && userRegisterSubmit()" #f="ngForm" novalidate>
+                        <div class="form-group">
+                            <div class="row" >
+                                <div class="col-3 col-label " style="background-color: white">Username</div>
+                                <div class="col-9" style="background-color: white">
+                                    <input type="text" name="username" [(ngModel)]="registerForm.username" class="form-control" 
+                                        #username="ngModel" minlength="9">
+                                    <div class="text-danger" *ngIf="username.errors?.minlength">Username must have atleast 9 character</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <div class="row" >
+                                <div class="col-3 col-label " style="background-color: white">Display name</div>
+                                <div class="col-9" style="background-color: white">
+                                    <input type="text" name="displayName" [(ngModel)]="registerForm.displayName" class="form-control"
+                                        #displayName="ngModel" minlength="5">
+                                    <div class="text-danger" *ngIf="displayName.errors?.minlength">Display must have atleast 5 character</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row" >
+                                <div class="col-3 col-label " style="background-color: white">Email</div>
+                                <div class="col-9" style="background-color: white">
+                                    <input type="text" name="email" [(ngModel)]="registerForm.email" class="form-control"
+                                        #email="ngModel" email>
+                                    <div class="text-danger" *ngIf="email.errors?.email">Invalid email address</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-3 col-label" style="background-color: white">Password</div>
+                                <div class="col-9" style="background-color: white"> 
+                                    <input type="password" name="password" [(ngModel)]="registerForm.password" class="form-control"
+                                        #password="ngModel" minlength="6">
+                                    <div class="text-danger" *ngIf="password.errors?.minlength">Password must have at least 6 character</div>
+                                    
+                                    <div class="text-danger" *ngIf="registerFailed">{{registerFailedMess}}</div>
+                                    <div class="text-success" *ngIf="registerSuccess">{{registerSuccessMess}}</div>
+                                    <button class="btn btn-primary mr-3 mt-3" (click)="userRegisterSubmit()">Register!</button>
+                                    <br><br>
+                                    <a class="mt-3 my-link" (click)="changeState()">- Already have an account? Login now!</a><br>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

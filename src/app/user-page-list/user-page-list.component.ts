@@ -1,3 +1,4 @@
+import { MyConstant } from './../constant/MyConstant';
 import { PageService } from './../service/page.service';
 import { CustomPage } from './../entities/custom-page';
 import { Component, OnInit } from '@angular/core';
@@ -32,7 +33,7 @@ export class UserPageListComponent implements OnInit {
   }
 
   getSanitizer(url: string) {
-    url = 'http://localhost:8080/api/page/' + url;
+    url = MyConstant.API_ENDPOINT + 'page/' + url;
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 }
