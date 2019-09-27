@@ -15,7 +15,6 @@ export class AppComponent {
 
   constructor(private router: Router, public token: TokenStorageService) {
     this.updateInfo();
-    console.log(this.info);
   }
 
   updateInfo() {

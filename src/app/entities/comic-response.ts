@@ -1,3 +1,4 @@
+import { UploaderComic } from './uploader-comic';
 import { Tag } from './tag';
 
 export class ComicResponse {
@@ -6,11 +7,11 @@ export class ComicResponse {
     title: string;
     artist: string;
     tags: Tag[];
-    uploader: {
-        id: number,
-        display: string
-    };
+    uploader: UploaderComic;
     date: string;
     comicFavorites: number;
 
+    constructor() {
+        this.uploader = new UploaderComic();
+    }
 }

@@ -28,7 +28,6 @@ export class UserPageListComponent implements OnInit {
     this.pageService.getAllPages(+id).subscribe(data => {
       this.pages = data;
     }, error => {
-      console.log(error);
     });
   }
 

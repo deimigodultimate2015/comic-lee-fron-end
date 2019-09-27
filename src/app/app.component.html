@@ -2,11 +2,11 @@
   <div class="main-header">
       <div class="row" style="width: 100%">
         <div class="col brand-name-col">
-          <span class="brand-name" (click)="toHomePage()">Comic's Lee <span *ngIf="token.getAuthorities()[0]">/ Uploader</span></span>
+          <span class="brand-name" (click)="toHomePage()">Comic's Lee <span *ngIf="token.getAuthorities()[0] === 'ROLE_UPLOADER'">/ Uploader</span></span>
         </div>
         <div class="col user-info">
           
-            <span class="username-navbar" style="cursor: pointer;" *ngIf="token.getAuthorities()[0]" (click)="toComicsManager()">Comics manager |</span>
+            <span class="username-navbar" style="cursor: pointer;" *ngIf="token.getAuthorities()[0] === 'ROLE_UPLOADER'" (click)="toComicsManager()">Comics manager |</span>
           <span class="username-navbar">{{info.username}}</span>
           <button class="logout-button" *ngIf="!info.username" (click)="goToLogin()">Sign in</button>
           <button class="logout-button" *ngIf="info.username" (click)="logout()">Logout</button>

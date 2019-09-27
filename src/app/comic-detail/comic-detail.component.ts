@@ -21,7 +21,7 @@ export class ComicDetailComponent implements OnInit {
   currentImageToUpload: File;
 
   uploadForm: FormData = new FormData();
-  currentComic: ComicResponse;
+  currentComic: ComicResponse = new ComicResponse();
 
   pagesChanged = false;
   pagesUpdated = false;
@@ -51,7 +51,7 @@ export class ComicDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-   this.updateComicInfo();
+    this.updateComicInfo();
 
   }
 
@@ -59,7 +59,9 @@ export class ComicDetailComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.comicService.getComic(+id).subscribe((data: ComicResponse) => {
       this.currentComic = data;
-      this.checkFavorState();
+      if (this.token.getUsername && this.token.getAuthorities()[0] === 'ROLE_USER') {
+        this.checkFavorState();
+      }
       this.getAllPages();
     });
   }
@@ -69,9 +71,7 @@ export class ComicDetailComponent implements OnInit {
     favRequest.username = this.token.getUsername();
     favRequest.comicId = this.currentComic.id;
 
-    console.log(this.token.getUsername());
     this.userSerivce.checkFavoriteState(favRequest).subscribe(data => {
-      console.log('Current favor state is: ' + data);
       this.isFavorited = data;
     });
   }
@@ -84,7 +84,6 @@ export class ComicDetailComponent implements OnInit {
 
 
     this.pageService.updatePages(this.currentComic.id, idsToUpdate).subscribe(data => {
-      console.log(data);
     }, error => {
       this.pagesChanged = false;
       this.pagesUpdated = true;
@@ -98,14 +97,12 @@ export class ComicDetailComponent implements OnInit {
 
   uploadPage() {
     this.uploadForm = new FormData();
-    console.log(this.currentImageToUpload.name);
     this.uploadForm.append('file', this.currentImageToUpload);
     this.uploadForm.append('comicId', this.currentComic.id + '');
     this.uploadForm.append('comicId', this.currentComic.id + '');
     this.uploadForm.append('index', this.pages.length + '');
 
     this.pageService.uploadPage(this.uploadForm).subscribe(data => {
-      console.log('Upload complete');
       this.getAllPages();
     }, error => {
       this.getAllPages();
@@ -120,7 +117,6 @@ export class ComicDetailComponent implements OnInit {
       favRequest.comicId = this.currentComic.id;
 
       this.userSerivce.favorite(favRequest).subscribe(data => {
-        console.log(data);
         this.checkFavorState();
         this.updateComicInfo();
       });
@@ -141,12 +137,10 @@ export class ComicDetailComponent implements OnInit {
     this.pageService.getAllPages(this.currentComic.id).subscribe(data => {
       this.pages = data;
     }, error => {
-      console.log(error);
     });
   }
 
   onFileSelected(event) {
-    console.log('file changed');
     event.target.files = null;
     this.currentImageToUpload = event.target.files[0] as File;
     this.uploadPage();
@@ -160,7 +154,6 @@ export class ComicDetailComponent implements OnInit {
         if (destinationIndex < 0) {destinationIndex = 0; }
         if (destinationIndex > this.pages.length - 1) {destinationIndex = this.pages.length - 1; }
 
-        console.log('Current index is: ' + currentIndex + 'and destination index is: ' + destinationIndex);
         const temp = this.pages[destinationIndex] ;
         this.pages[destinationIndex] = this.pages[currentIndex];
         this.pages[currentIndex] = temp;

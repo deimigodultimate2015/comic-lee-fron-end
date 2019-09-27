@@ -66,7 +66,6 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
     this.uploaderService.getUploaderInfo(this.token.getUsername()).subscribe((data: Uploader) => {
       this.uploaderInfo = data;
       this.updateComicsList();
-      console.log(data);
     });
   }
 
@@ -75,12 +74,9 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
   }
 
   updateComicsList() {
-    console.log('called');
     this.comicServe.getAllComics(this.uploaderInfo.id).subscribe(data => {
       this.listComics = data;
-      console.log('Ok');
     }, error => {
-      console.log(error);
     });
   }
 
@@ -113,7 +109,6 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
 
     this.uploadClicked = true;
 
-    console.log(this.comicRequest);
 
     this.comicServe.updateComic(this.currentIdToUpdate, this.comicRequest).subscribe(data => {
       this.uploadMessage = 'Comic store success fully';
@@ -164,7 +159,6 @@ export class ComicListUploaderComponent implements OnInit, OnDestroy {
         this.tagsToUpload.push(this.currentTagToDecide);
       }
     }
-    console.log(this.tagsToUpload);
   }
 
   removeTag(tag: Tag) {
