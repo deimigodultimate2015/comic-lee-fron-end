@@ -14,6 +14,7 @@
                     <div class="badge badge-danger m-1" *ngFor="let tag of currentComic.tags">{{tag.name}}</div>
                 </strong>
                 <hr>
+               
                 <div class="form-group" *ngIf="token.getAuthorities()[0] !== 'ROLE_UPLOADER'">
                     <button type="button" class="btn btn-primary m-2 love-button" (click)="favorite()">
                         <i class="fas fa-heart mr-1"></i><span *ngIf="isFavorited">Unfavorite</span>
@@ -28,7 +29,24 @@
                         <button type="button" class="btn btn-primary" (click)='updatePageIndex()'>
                                 Update pages status <i class="fas fa-check-circle"></i></button>
                 </div>
+
+                <hr>
+                <div class="row">
+                    <div class="col-2 comic-view">
+                        <div class="the-eye">
+                            <i class="fas fa-eye"></i>
+                            Views
+                        </div>
+                        <span class="total-views">{{viewsReport.totalViews}}</span>
+                    </div>
+                    <div class="col-10">
+                        <div style="height: 100px; width: 100%; padding: 10px">
+                            <canvas #myChart width="200" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
         </div>
     </div>
 
@@ -62,7 +80,6 @@
                 <img  src="https://upload.wikimedia.org/wikipedia/en/8/82/Studio_Wildcard_logo.png" alt="">
                 <span class="insert-slogan">Insert your new page here</span>
             </div>
-            
         </div>
     </div>
 </div>

@@ -1,3 +1,4 @@
+import { ViewRequest } from './../entities/view-request';
 import { MyConstant } from './../constant/MyConstant';
 import { FavoriteRequest } from './../entities/favorite-request';
 import { UserService } from './../service/user.service';
@@ -6,9 +7,11 @@ import { PageService } from './../service/page.service';
 import { ComicResponse } from './../entities/comic-response';
 import { ComicService } from './../service/comic.service';
 import { CustomPage } from './../entities/custom-page';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Chart } from 'chart.js';
+import { ViewsReport } from '../entities/views-report';
 
 @Component({
   selector: 'app-comic-detail',
@@ -16,12 +19,15 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./comic-detail.component.css']
 })
 export class ComicDetailComponent implements OnInit {
+  @ViewChild('myChart', {static: true}) chart: ElementRef;
 
   pages: CustomPage[] = [];
   currentImageToUpload: File;
 
   uploadForm: FormData = new FormData();
   currentComic: ComicResponse = new ComicResponse();
+
+  viewsReport: ViewsReport = new ViewsReport();
 
   pagesChanged = false;
   pagesUpdated = false;
@@ -33,6 +39,17 @@ export class ComicDetailComponent implements OnInit {
               private router: Router, public token: TokenStorageService,
               private userSerivce: UserService) {
 
+  }
+
+  updateViewsReport() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.comicService.getViewsReport(+id).subscribe((data: ViewsReport) => {
+      this.viewsReport = data;
+
+      this.createChart();
+      console.log(data);
+    }, error => {
+    });
   }
 
   getSanitizer(url: string) {
@@ -52,13 +69,13 @@ export class ComicDetailComponent implements OnInit {
 
   ngOnInit() {
     this.updateComicInfo();
-
   }
 
   updateComicInfo() {
     const id = this.route.snapshot.paramMap.get('id');
     this.comicService.getComic(+id).subscribe((data: ComicResponse) => {
       this.currentComic = data;
+      this.updateViewsReport();
       if (this.token.getUsername && this.token.getAuthorities()[0] === 'ROLE_USER') {
         this.checkFavorState();
       }
@@ -110,6 +127,15 @@ export class ComicDetailComponent implements OnInit {
 
   }
 
+  uuidSender() {
+    console.log('Uuid sent');
+    this.comicService.countView(new ViewRequest(this.token.getUUID(), this.currentComic.id)).subscribe(data => {
+      console.log(data);
+    }, error => {
+      console.log(error);
+    });
+  }
+
   favorite() {
     if (this.token.getUsername()) {
       const favRequest: FavoriteRequest = new FavoriteRequest();
@@ -130,6 +156,7 @@ export class ComicDetailComponent implements OnInit {
   }
 
   navigateToRead(id: number) {
+    this.uuidSender();
     this.router.navigate(['comic/read', id]);
   }
 
@@ -146,7 +173,6 @@ export class ComicDetailComponent implements OnInit {
     this.uploadPage();
   }
 
-
   movePageTo(currentIndex: number, destinationIndex: number) {
     if (this.pages.length > 1) {
 
@@ -162,6 +188,70 @@ export class ComicDetailComponent implements OnInit {
       }
     }
 
+  }
+
+  createChart() {
+    const ctx = this.chart.nativeElement.getContext('2d');
+    ctx.height = 300;
+    Chart.defaults.global.legend.display = false;
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [
+          'day ' + this.viewsReport.viewDays[6].day,
+          'day ' + this.viewsReport.viewDays[5].day,
+          'day ' + this.viewsReport.viewDays[4].day,
+          'day ' + this.viewsReport.viewDays[3].day,
+          'day ' + this.viewsReport.viewDays[2].day,
+          'day ' + this.viewsReport.viewDays[1].day,
+          'day ' + this.viewsReport.viewDays[0].day
+        ],
+        datasets: [{
+            lineTension: 0,
+            data: [
+              this.viewsReport.viewDays[6].views,
+              this.viewsReport.viewDays[5].views,
+              this.viewsReport.viewDays[4].views,
+              this.viewsReport.viewDays[3].views,
+              this.viewsReport.viewDays[2].views,
+              this.viewsReport.viewDays[1].views,
+              this.viewsReport.viewDays[0].views
+            ],
+            backgroundColor: [
+                'rgba(81,229,255,0.2)',
+            ],
+            borderColor: 'rgba(23,86,118,1)',
+            borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        scales: {
+            yAxes: [{
+              display: false,
+            }],
+            xAxes: [{
+              gridLines: {
+                display: false
+              },
+              ticks: {
+                beginAtZero: true,
+                maxTicksLimit: 7,
+              }
+            }]
+        },
+        tooltips: {
+          displayColors: false,
+          callbacks: {
+              label(tooltipItems, data) {
+              return tooltipItems.yLabel + ' views';
+            }
+          }
+        }
+      }
+    });
   }
 
 }

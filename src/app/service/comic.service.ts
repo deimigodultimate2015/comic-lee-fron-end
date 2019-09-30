@@ -1,3 +1,4 @@
+import { ViewRequest } from './../entities/view-request';
 import { MyConstant } from './../constant/MyConstant';
 import { ComicRequest } from './../entities/comic-request';
 import { HttpClient } from '@angular/common/http';
@@ -34,5 +35,13 @@ export class ComicService {
 
   getUserFavoriteComics(username: string): Observable<any> {
     return this.http.get(`${MyConstant.API_ENDPOINT}user/favorite/comics/${username}`);
+  }
+
+  countView(viewRequest: ViewRequest): Observable<any> {
+    return this.http.post(`${MyConstant.API_ENDPOINT}view`, viewRequest);
+  }
+
+  getViewsReport(comicId: number): Observable<object> {
+    return this.http.get(`${MyConstant.API_ENDPOINT}views/${comicId}`);
   }
 }

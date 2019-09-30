@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 const TOKEN_KEY = 'AuthToken';
 const USERNAME_KEY = 'AuthUsername';
 const AUTHORITIES_KEY = 'AuthAuthorities';
+const UUID_KEY = 'AuthUUID';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,16 @@ export class TokenStorageService {
 
   public getToken() {
     return sessionStorage.getItem(TOKEN_KEY);
+  }
+
+  public getUUID() {
+    if (localStorage.getItem(UUID_KEY)) {
+      return localStorage.getItem(UUID_KEY);
+    } else {
+      const uuid = require('uuid');
+      localStorage.setItem(UUID_KEY, uuid.v1());
+      return localStorage.getItem(UUID_KEY);
+    }
   }
 
   public saveUsername(username: string) {

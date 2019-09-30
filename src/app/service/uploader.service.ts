@@ -15,4 +15,9 @@ export class UploaderService {
   getUploaderInfo(username: string): Observable<object> {
     return this.http.get(`${MyConstant.API_ENDPOINT}uploader/${username}`);
   }
+
+  getUserComicReport(username: string): Observable<any> {
+    return this.http.get(`${MyConstant.API_ENDPOINT}`)
+
+  }
 }
