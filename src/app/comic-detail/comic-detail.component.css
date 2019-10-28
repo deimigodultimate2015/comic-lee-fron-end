@@ -59,3 +59,26 @@
 .total-views {
     font-size: 2em;
 }
+
+.non-border {
+    border: 0px solid red;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+/* .reply-block {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    grid-template-areas: 
+    "hr rr rr rr rr rr rr rr rr rr rr rr rr rr rr rr"
+}
+
+.hierarchy-row {
+    grid-area: hr;
+}
+
+.reply-row {
+    grid-area: rr;
+} */
