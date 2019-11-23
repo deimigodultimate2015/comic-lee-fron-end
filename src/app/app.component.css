@@ -6,6 +6,10 @@
     margin-bottom: 15px;
 }
 
+.my-row {
+    display: flex;;
+}
+
 .brand-name-col {
     background-color: #212121;
 }
@@ -24,6 +28,7 @@
 .user-info {
     background-color: #212121;
     text-align: right;
+    flex-grow: 1;
 }
 
 .username-navbar {
@@ -44,5 +49,24 @@
 }
 
 .container-wrapper {
-    background-color: #edecea;
+    background-color: #0D0D0D;
+}
+
+.search-button {
+    background-color: #ed2553;
+    color: white;
+}
+
+.search-form {
+    display: inline-block; 
+    width: 30vw;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .search-form {
+        display: none; 
+        width: 80vw;
+    }
+
 }

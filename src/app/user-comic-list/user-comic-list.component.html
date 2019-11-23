@@ -6,13 +6,19 @@
         </div>
         <hr>
         <div class="comic-collections">
-            <div *ngFor="let comic of userComics" class="comic">
+            <div *ngFor="let comic of paginatedUserComics.data" class="comic">
                 <div class="image-wrapper">
                     <img [src]="getSanitizer(comic.coverId)" alt="" (click)="toDetailPage(comic.comicId)">
                 </div>
                 <div class="my-card-body">
                     <div class="title" (click)="toDetailPage(comic.comicId)">{{comic.title}}</div>
                 </div>
+            </div>
+        </div>
+
+        <div class="pagination-bar">
+            <div *ngFor="let index of paginationBarData" class="page-index" [ngClass]="{'page-index-current': index === paginatedUserComics.currentPage}">
+                {{index}}
             </div>
         </div>
     </div>

@@ -1,44 +1,50 @@
 .comic-collections {
+    background-color: #1f1f1f;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    padding-top: 10px;
 }
 
 .comic {
-    max-width: 16%;
-    margin-right: 20px;
-    margin-bottom: 15px;
+    display: inline-block;
+    cursor: pointer;
+    max-width: 19%;
+    margin-left: 1%;
+    margin-bottom: 15px ;
     flex-grow: 1;
     font-family: 'Open Sans', sans-serif;
     border: none;
 }
 
 .my-card-body {
+    position: relative;
+    text-align: center;
+    color: #d9d9d9;
     max-width: auto;
-    padding: 5px 0px 5px 0px;
+    max-height: 3.1em;
+    overflow: hidden;
+}
+
+.comic:hover > .my-card-body{
+    z-index: 1;
+    overflow: visible;
 }
 
 .image-wrapper{
-    height: 250px;
+    max-width: 100%;
 }
 
 .comic img {
-    height: 100%;
-    border: 2px solid transparent;
+    width: 100%;
 }
 
-.comic img:hover {
-    cursor: pointer;
-    border: 2px solid orange;
-}
 
 .title {
-    font-size: 1.1em;
-}
-
-.title:hover {
-    color: orange;
-    cursor: pointer;
+    background-color: #404040;
+    padding: 5px 2px;
+    font-size: 0.9em;
+    font-weight: 600;
 }
 
 .filter-button {
@@ -47,4 +53,46 @@
     border: none;
     margin-right: 10px;
     padding: 0px 10px;
+}
+
+.pagination-bar {
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.page-index {
+    cursor: pointer;
+    margin: 0px 5px;
+    height: 35px;
+    width: 35px;
+    line-height: 35px;
+    border-radius: 100%;
+    display: inline-block;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #d9d9d9;
+}
+
+.page-index:hover {
+    background-color: #404040;
+}
+
+.page-index-current {
+    background-color: #404040;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .comic {
+        display: inline-block;
+        cursor: pointer;
+        max-width: 49%;
+        margin-left: 1%;
+        margin-bottom: 15px ;
+        flex-grow: 1;
+        font-family: 'Open Sans', sans-serif;
+        border: none;
+    }
+ 
 }

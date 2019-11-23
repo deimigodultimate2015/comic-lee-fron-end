@@ -1,3 +1,4 @@
+import { PaginatedUserComics } from './../entities/paginated-user-comics';
 import { MyConstant } from './../constant/MyConstant';
 import { TokenStorageService } from './../auth/token-storage.service';
 import { UserComicResponse } from './../entities/user-comics-response';
@@ -16,7 +17,9 @@ export class UserComicListComponent implements OnInit {
   constructor(private comicService: ComicService,
               private sanitizer: DomSanitizer,
               private router: Router, public token: TokenStorageService) { }
-  userComics: UserComicResponse[] = [];
+
+  paginatedUserComics: PaginatedUserComics = new PaginatedUserComics;
+  paginationBarData: number[] = [];
 
   ngOnInit() {
     this.updateComicList();
@@ -24,13 +27,16 @@ export class UserComicListComponent implements OnInit {
 
   updateComicList() {
     this.comicService.getUserComic().subscribe(data => {
-      this.userComics = data;
+      this.paginatedUserComics = data;
+      
+      console.log(this.paginatedUserComics);
+      this.paginationBarData = this.getPagination(this.paginatedUserComics.totalPage, this.paginatedUserComics.currentPage);
     });
   }
 
   updateComicListFavorite() {
     this.comicService.getUserFavoriteComics(this.token.getUsername()).subscribe(data => {
-      this.userComics = data;
+      this.paginatedUserComics = data;
     });
   }
 
@@ -43,5 +49,20 @@ export class UserComicListComponent implements OnInit {
     this.router.navigate(['comic/detail', id]);
   }
 
+  getPagination(totalPage, currentPage) {
 
+    let paginationBar = [];
+  
+    if(currentPage > totalPage) {
+      currentPage = totalPage;
+    }
+  
+    for(let i = (currentPage - 4); i < (currentPage+6); i++) {
+      if(i > 0 && i < (totalPage+1)) {
+        paginationBar.push(i);
+      } 
+    }
+
+    return paginationBar;
+  }
 }

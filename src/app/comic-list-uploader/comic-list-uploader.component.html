@@ -2,19 +2,19 @@
   <button class="btn btn-success mb-2" data-toggle="modal" data-target="#myModal" 
     (click)="openAdd()">Add comic <i class="fas fa-plus"></i></button>
   <a class="text-white btn btn-success ml-2 mb-2"
-    href="http://192.168.136.122:8080/api/statistic/uploadercomic/{{token.getUsername()}}">Export excel <i class="fas fa-download"></i></a>
-  <table class="table">
-    <thead class="thead-dark">
+    href="localhost:8080/api/statistic/uploadercomic/{{token.getUsername()}}">Export excel <i class="fas fa-download"></i></a>
+  <table class=" my-table">
+    <thead class="my-thead">
       <tr>
-          <th>Title</th>
-          <th>Artist</th>
-          <th>Upload time</th>
-          <th>Action</th>
+          <th class="p-1">Title</th>
+          <th class="p-1">Artist</th>
+          <th class="p-1">Upload time</th>
+          <th class="p-1">Action</th>
       </tr>
     </thead>
     <tbody >
         <tr *ngFor="let comic of listComics; let i = index">
-            <td>{{comic.title}}</td>
+            <td class="text-white" style="max-width: 20vw;">{{comic.title}}</td>
             <td>{{comic.artist}}</td>
             <td>{{comic.date}}</td>
             <td style="width: 22%"><button type="button" class="btn btn-primary" (click)="goToDetails(comic.id)">Detail <i class="fas fa-info-circle"></i></button>

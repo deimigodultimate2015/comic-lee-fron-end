@@ -11,3 +11,17 @@
     color: white;
     font-family:  'Lobster', cursive;
 }
+
+.my-thead {
+    border: none !important;
+    background-color: #343a40;
+    border-radius: 15px;
+    color: #ececec;
+}
+
+.my-table {
+    width: 100%; 
+    font-size: 0.8em;
+    font-weight: 500;
+    border:none !important;
+}

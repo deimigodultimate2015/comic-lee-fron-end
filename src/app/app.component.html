@@ -1,12 +1,23 @@
 <div class="container-wrapper">
   <div class="main-header">
-      <div class="row" style="width: 100%">
-        <div class="col brand-name-col">
-          <span class="brand-name" (click)="toHomePage()">Comic's Lee <span *ngIf="token.getAuthorities()[0] === 'ROLE_UPLOADER'">/ Uploader</span></span>
+      <div class="my-row" style="width: 100%">
+        <div class="brand-name-col">
+          <span class="brand-name" (click)="toHomePage()">C'L <span *ngIf="token.getAuthorities()[0] === 'ROLE_UPLOADER'">/ Uploader</span></span>
+
+          <form action="" class="search-form ml-3" style="display: inline-block; width: 30vw;">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn search-button" type="button">
+                  <i class="fa fa-search fa-lg"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
         </div>
-        <div class="col user-info">
-          
-            <span class="username-navbar" style="cursor: pointer;" *ngIf="token.getAuthorities()[0] === 'ROLE_UPLOADER'" (click)="toComicsManager()">Comics manager |</span>
+        <div class="user-info">
+          <span class="username-navbar" style="cursor: pointer;" *ngIf="token.getAuthorities()[0] === 'ROLE_UPLOADER'" (click)="toComicsManager()">Comics manager |</span>
           <span class="username-navbar">{{info.username}}</span>
           <button class="logout-button" *ngIf="!info.username" (click)="goToLogin()">Sign in</button>
           <button class="logout-button" *ngIf="info.username" (click)="logout()">Logout</button>
