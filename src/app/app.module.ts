@@ -12,6 +12,7 @@ import { UserComicListComponent } from './user-comic-list/user-comic-list.compon
 import { UserPageListComponent } from './user-page-list/user-page-list.component';
 import { LoginComponent } from './login/login.component';
 import { httpInterceptorProviders } from './auth/auth-interceptor';
+import { CommentComponent } from './comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { httpInterceptorProviders } from './auth/auth-interceptor';
     ComicDetailComponent,
     UserComicListComponent,
     UserPageListComponent,
-    LoginComponent
+    LoginComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,

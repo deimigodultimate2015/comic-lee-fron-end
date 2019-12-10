@@ -1,3 +1,4 @@
+import { SearchRequest } from './../entities/search.request';
 import { PaginatedUserComics } from './../entities/paginated-user-comics';
 import { MyConstant } from './../constant/MyConstant';
 import { TokenStorageService } from './../auth/token-storage.service';
@@ -18,17 +19,17 @@ export class UserComicListComponent implements OnInit {
               private sanitizer: DomSanitizer,
               private router: Router, public token: TokenStorageService) { }
 
-  paginatedUserComics: PaginatedUserComics = new PaginatedUserComics;
+  paginatedUserComics: PaginatedUserComics = new PaginatedUserComics();
   paginationBarData: number[] = [];
+  searchRequest = new SearchRequest();
 
   ngOnInit() {
     this.updateComicList();
   }
 
   updateComicList() {
-    this.comicService.getUserComic().subscribe(data => {
+    this.comicService.getUserComic(this.searchRequest).subscribe(data => {
       this.paginatedUserComics = data;
-      
       console.log(this.paginatedUserComics);
       this.paginationBarData = this.getPagination(this.paginatedUserComics.totalPage, this.paginatedUserComics.currentPage);
     });
@@ -51,18 +52,23 @@ export class UserComicListComponent implements OnInit {
 
   getPagination(totalPage, currentPage) {
 
-    let paginationBar = [];
-  
-    if(currentPage > totalPage) {
+    const paginationBar = [];
+
+    if (currentPage > totalPage) {
       currentPage = totalPage;
     }
-  
-    for(let i = (currentPage - 4); i < (currentPage+6); i++) {
-      if(i > 0 && i < (totalPage+1)) {
+
+    for (let i = (currentPage - 4); i < (currentPage + 6); i++) {
+      if (i > 0 && i < (totalPage + 1)) {
         paginationBar.push(i);
-      } 
+      }
     }
 
     return paginationBar;
+  }
+
+  pageSelection(page: number) {
+    this.searchRequest.page = page;
+    this.updateComicList();
   }
 }

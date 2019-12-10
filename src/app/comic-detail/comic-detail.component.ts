@@ -1,3 +1,4 @@
+import { CommentRequest } from './../entities/comment.request';
 import { ViewRequest } from './../entities/view-request';
 import { MyConstant } from './../constant/MyConstant';
 import { FavoriteRequest } from './../entities/favorite-request';

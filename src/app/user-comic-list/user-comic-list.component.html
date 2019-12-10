@@ -17,7 +17,8 @@
         </div>
 
         <div class="pagination-bar">
-            <div *ngFor="let index of paginationBarData" class="page-index" [ngClass]="{'page-index-current': index === paginatedUserComics.currentPage}">
+            <div *ngFor="let index of paginationBarData" class="page-index" [ngClass]="{'page-index-current': index === paginatedUserComics.currentPage}"
+            (click)="pageSelection(index)">
                 {{index}}
             </div>
         </div>

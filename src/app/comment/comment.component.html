@@ -1,0 +1,52 @@
+<div>
+    <div class="card">
+        <div class="card-body p-0">
+            <textarea [(ngModel)]='commentRequest.content' class="form-control non-border"></textarea>
+        </div>
+    </div>
+    <div class="float-right mt-2">
+        <div class="inline-block mr-2 text-secondary">{{1000 - commentRequest.content.length}}</div>
+        <button class="btn btn-primary btn-sm inline-block" (click)="postComment()">Comment</button>
+    </div>
+</div>
+
+<div class="mt-3" *ngFor="let comment of commentResponse">
+    <span class="font-weight-bold small">hanazuki2010 </span>
+    <span class="text-secondary small">{{comment.point}} point - {{comment.createdDate}}</span>
+    <br>
+    <span class="mt-1">{{comment.content}}</span>
+    <div class="mt-1">
+        <div class="text-secondary small font-weight-bold inline-block mr-2" (click)="openReply(comment)">Reply</div>
+        <div class="text-secondary small font-weight-bold inline-block mr-2" 
+        [ngClass]="{'text-success': comment.state === 1}" (click)="postCommentInteraction(comment, 1)"><i class="fas fa-arrow-up"></i></div>
+        <div class="text-secondary small font-weight-bold inline-block"
+         [ngClass]="{'text-danger': comment.state === -1}" (click)="postCommentInteraction(comment, -1)"><i class="fas fa-arrow-down"></i></div>
+    </div>
+    <!--REPLY RIGHT HERE-->
+    <div class="pl-3" style="border-left: 2px solid lightgray">
+        <div class="mt-3"  *ngFor="let reply of comment.replies">
+            <span class="font-weight-bold small">hanazuki2012 </span>
+            <span class="text-secondary small">{{reply.point}} point - {{reply.createdDate}}</span>
+            <br>
+            <span class="mt-1">{{reply.content}}</span>
+            <div class="mt-1">
+                <div class="text-secondary small font-weight-bold inline-block mr-2">Reply</div>
+                <div class="text-secondary small font-weight-bold inline-block mr-2" 
+                [ngClass]="{'text-success': reply.state === 1}" (click)="postReplyInteraction(reply, 1)"><i class="fas fa-arrow-up"></i></div>
+                <div class="text-secondary small font-weight-bold inline-block" 
+                [ngClass]="{'text-danger': reply.state === -1}" (click)="postReplyInteraction(reply, -1)"><i class="fas fa-arrow-down"></i></div>
+            </div>
+        </div>
+        <div class="pt-2" *ngIf="this.commentIdInReply === comment.id">
+            <div class="card">
+                <div class="card-body p-0">
+                    <textarea [(ngModel)]='replyRequest.content' class="form-control non-border"></textarea>
+                </div>
+            </div>
+            <div class="float-right mt-2">
+                <div class="inline-block mr-2 text-secondary">{{1000 - commentRequest.content.length}}</div>
+                <button class="btn btn-primary btn-sm inline-block" (click)="postReply(comment)">Reply</button>
+            </div>
+        </div>
+    </div>
+</div>

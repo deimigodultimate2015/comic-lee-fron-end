@@ -1,7 +1,8 @@
+import { SearchRequest } from './../entities/search.request';
 import { ViewRequest } from './../entities/view-request';
 import { MyConstant } from './../constant/MyConstant';
 import { ComicRequest } from './../entities/comic-request';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ComicResponse } from '../entities/comic-response';
@@ -29,8 +30,11 @@ export class ComicService {
     return this.http.put(MyConstant.API_ENDPOINT + 'comic/' + comicId, comicRequest);
   }
 
-  getUserComic(): Observable<any> {
-    return this.http.get(MyConstant.API_ENDPOINT + 'user/comics');
+  getUserComic(searchRequest: SearchRequest): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('page', searchRequest.page + '');
+    params = params.append('search', searchRequest.search);
+    return this.http.get(MyConstant.API_ENDPOINT + 'user/comics', {params});
   }
 
   getUserFavoriteComics(username: string): Observable<any> {

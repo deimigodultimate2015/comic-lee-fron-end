@@ -2,7 +2,7 @@
   <button class="btn btn-success mb-2" data-toggle="modal" data-target="#myModal" 
     (click)="openAdd()">Add comic <i class="fas fa-plus"></i></button>
   <a class="text-white btn btn-success ml-2 mb-2"
-    href="localhost:8080/api/statistic/uploadercomic/{{token.getUsername()}}">Export excel <i class="fas fa-download"></i></a>
+    href="http://localhost:8080/api/statistic/uploadercomic/{{token.getUsername()}}">Export excel <i class="fas fa-download"></i></a>
   <table class=" my-table">
     <thead class="my-thead">
       <tr>
@@ -13,10 +13,10 @@
       </tr>
     </thead>
     <tbody >
-        <tr *ngFor="let comic of listComics; let i = index">
+        <tr class="custom-tr" *ngFor="let comic of listComics; let i = index">
             <td class="text-white" style="max-width: 20vw;">{{comic.title}}</td>
-            <td>{{comic.artist}}</td>
-            <td>{{comic.date}}</td>
+            <td class="text-white" >{{comic.artist}}</td>
+            <td class="text-white" >{{comic.date}}</td>
             <td style="width: 22%"><button type="button" class="btn btn-primary" (click)="goToDetails(comic.id)">Detail <i class="fas fa-info-circle"></i></button>
               <button class="btn btn-success ml-2" data-toggle="modal" data-target="#myModal" 
               (click)="openEdit(i)">Edit comic <i class="fas fa-edit"></i></button></td>

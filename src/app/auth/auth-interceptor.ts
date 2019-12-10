@@ -23,7 +23,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 'Authorization':  'Bearer ' + token,
                 'sol_role': role
               });
-
             authReq = req.clone({headers});
         }
         return next.handle(authReq);

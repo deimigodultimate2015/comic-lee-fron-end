@@ -25,3 +25,9 @@
     font-weight: 500;
     border:none !important;
 }
+
+.custom-tr {
+    border-bottom: 1px dashed rgb(158, 158, 158);
+    padding: 3px 0px !important;
+    font-size: 1.2em;
+}
